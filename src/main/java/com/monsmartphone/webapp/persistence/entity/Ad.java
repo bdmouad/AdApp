@@ -29,8 +29,8 @@ public class Ad implements Serializable {
 	@Column(name = "title", length = 100, nullable = false)
 	private String title;
 
-	@Column(name = "login", length = 100, nullable = false)
-	private String login;
+	@Column(name = "username", length = 100, nullable = false)
+	private String username;
 
 	@Column(name = "photo1", length = 100, nullable = false)
 	private String photo1;
@@ -47,22 +47,18 @@ public class Ad implements Serializable {
 	@Column(name = "zip", length = 5, nullable = false)
 	private String zip;
 
-	/*@Lob
-	@Column(name = "desc", nullable = false)
-	private Character[] desc;
-	
-	@Column(name="DESC", columnDefinition="CLOB NOT NULL", table="EMP_DETAIL") 
-	@Lob 
-	public String getDescription() { return description; }
-
 	@Column(name = "price", nullable = false)
-	private Long price;*/
-	
-	@Column(name = "description", length = 100, nullable = false)
-	private String description;
+	private Long price;
+
+	@Column(name = "adtext", length = 100, nullable = false)
+	private String adtext;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "iduser", referencedColumnName = "id")
 	private User user;
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "idmodel", referencedColumnName = "id")
+	private Model model;
 
 }

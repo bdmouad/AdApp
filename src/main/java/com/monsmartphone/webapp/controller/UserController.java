@@ -3,9 +3,14 @@ package com.monsmartphone.webapp.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.monsmartphone.webapp.persistence.entity.User;
@@ -24,24 +29,32 @@ public class UserController {
 		return repo.findAll();
 	}
 
-	/*
-	 * @RequestMapping(value="/search", method = RequestMethod.GET)
-	 * 
-	 * @ResponseBody public List<User> findFiltered(@RequestParam String
-	 * pattern) { return repo.findByNomLike(pattern + "%"); }
-	 * 
-	 * @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	 * 
-	 * @ResponseBody public User findById(@PathVariable("id") final Long id) {
-	 * return repo.findOne(id); }
-	 * 
-	 * @RequestMapping(value = "/photo/{id}", method = RequestMethod.GET)
-	 * 
-	 * @ResponseBody public ResponseEntity<byte[]>
-	 * findPhotoById(@PathVariable("id") final Long id) { final HttpHeaders
-	 * headers = new HttpHeaders(); headers.setContentType(MediaType.IMAGE_PNG);
-	 * return new ResponseEntity<byte[]>(repo.findOne(id).getPhoto(), headers,
-	 * HttpStatus.CREATED); }
-	 */
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public User findOne(@PathVariable("id") final Long id) {
+		if (id == null) return new User();
+		return repo.findOne(id);
+	}
+	
+	@RequestMapping(value="/search", method = RequestMethod.GET)
+	@ResponseBody
+	public List<User> findFiltered(@RequestParam String pattern) {		
+		return repo.findByTelLike( "%" + pattern + "%");
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	public User create(@RequestBody final User resource) {
+		User u;
+		u = repo.save(resource);
+		return u;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable("id") final Long id) {
+		repo.delete(id);
+	}
 
 }

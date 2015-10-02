@@ -13,42 +13,42 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.monsmartphone.webapp.persistence.entity.Connexion;
-import com.monsmartphone.webapp.persistence.repository.ConnexionRepository;
+import com.monsmartphone.webapp.persistence.entity.Model;
+import com.monsmartphone.webapp.persistence.repository.ModelRepository;
 
 @RestController
-@RequestMapping(value = "/api/connexions")
-public class ConnexionController {
-
+@RequestMapping(value = "/api/models")
+public class ModelController {
+	
 	@Autowired
-	private ConnexionRepository repo;
+	private ModelRepository repo;
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
-	public List<Connexion> findAll() {
+	public List<Model> findAll() {
 		return repo.findAll();
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Connexion findOne(@PathVariable("id") final Long id) {
-		if (id == null) return new Connexion();
+	public Model findOne(@PathVariable("id") final Long id) {
+		if (id == null) return new Model();
 		return repo.findOne(id);
 	}
 	
 	@RequestMapping(value="/search", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Connexion> findFiltered(@RequestParam String pattern) {		
-		return repo.findByCountryLike( "%" + pattern + "%");
+	public List<Model> findFiltered(@RequestParam String pattern) {		
+		return repo.findByNameLike( "%" + pattern + "%");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public Connexion create(@RequestBody final Connexion resource) {
-		Connexion c;
-		c = repo.save(resource);
-		return c;
+	public Model create(@RequestBody final Model resource) {
+		Model m;
+		m = repo.save(resource);
+		return m;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
