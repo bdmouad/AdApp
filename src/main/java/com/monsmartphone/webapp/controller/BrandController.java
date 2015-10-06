@@ -1,5 +1,6 @@
 package com.monsmartphone.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.monsmartphone.webapp.persistence.entity.Brand;
+import com.monsmartphone.webapp.persistence.entity.Model;
 import com.monsmartphone.webapp.persistence.repository.BrandRepository;
 
 @RestController
@@ -28,20 +30,48 @@ public class BrandController {
 	public List<Brand> findAll() {
 		return repo.findAll();
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Brand findOne(@PathVariable("id") final Long id) {
-		if (id == null) return new Brand();
+		if (id == null)
+			return new Brand();
 		return repo.findOne(id);
 	}
-	
-	@RequestMapping(value="/search", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Brand> findFiltered(@RequestParam String pattern) {		
-		return repo.findByNameLike( "%" + pattern + "%");
+	public List<Brand> findFiltered(@RequestParam String pattern) {
+		return repo.findByNameLike("%" + pattern + "%");
 	}
-	
+
+	@RequestMapping(value = "/brand/forModel/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Brand findForModel(@PathVariable("id") final Long id) {
+		Brand thebrand = null;
+		for (Brand b : findAll()) {
+			for (Model m : b.getModels()) {
+				if (m.getId() == id) {
+					thebrand = b;
+				}
+			}
+		}
+		return thebrand;
+	}
+
+	@RequestMapping(value = "/brand/forModel", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Brand> findForModelLike(@RequestParam String pattern) {
+		List<Brand> list = new ArrayList<>();
+		for (Brand b : findAll()) {
+			for (Model m : b.getModels()) {
+				if (m.getName().contains(pattern))
+					list.add(b);
+			}
+		}
+		return list;
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody

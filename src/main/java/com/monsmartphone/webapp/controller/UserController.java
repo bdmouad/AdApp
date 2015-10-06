@@ -1,5 +1,6 @@
 package com.monsmartphone.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +33,28 @@ public class UserController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public User findOne(@PathVariable("id") final Long id) {
-		if (id == null) return new User();
+		if (id == null)
+			return new User();
 		return repo.findOne(id);
 	}
-	
-	@RequestMapping(value="/search", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	@ResponseBody
-	public List<User> findFiltered(@RequestParam String pattern) {		
-		return repo.findByTelLike( "%" + pattern + "%");
+	public List<User> findFiltered(@RequestParam String pattern) {
+		return repo.findByTelLike("%" + pattern + "%");
 	}
-	
+
+	@RequestMapping(value = "/search/byRoleId", method = RequestMethod.GET)
+	@ResponseBody
+	public List<User> findFilteredByRole(@RequestParam Long id) {
+		List<User> list = new ArrayList<>();
+		for (User u : findAll()) {
+			if (u.getRole().getId() == id)
+				list.add(u);
+		}
+		return list;
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody

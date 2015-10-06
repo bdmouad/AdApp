@@ -33,4 +33,28 @@ public class SearchQuery implements Serializable {
 	@JoinColumn(name = "idconnexion", referencedColumnName = "id")
 	private Connexion connexion;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	public Connexion getConnexion() {
+		return connexion;
+	}
+
+	public void setConnexion(Connexion connexion) {
+		this.connexion = connexion;
+	}
+
 }

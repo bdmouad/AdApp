@@ -1,5 +1,6 @@
 package com.monsmartphone.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +29,32 @@ public class SearchQueryController {
 	public List<SearchQuery> findAll() {
 		return repo.findAll();
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public SearchQuery findOne(@PathVariable("id") final Long id) {
-		if (id == null) return new SearchQuery();
+		if (id == null)
+			return new SearchQuery();
 		return repo.findOne(id);
 	}
-	
-	@RequestMapping(value="/search", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	@ResponseBody
-	public List<SearchQuery> findFiltered(@RequestParam String pattern) {		
-		return repo.findByQueryLike( "%" + pattern + "%");
+	public List<SearchQuery> findFiltered(@RequestParam String pattern) {
+		return repo.findByQueryLike("%" + pattern + "%");
 	}
-	
+
+	@RequestMapping(value = "/search/byConnexionId", method = RequestMethod.GET)
+	@ResponseBody
+	public List<SearchQuery> findFilteredByConnexion(@RequestParam Long id) {
+		List<SearchQuery> list = new ArrayList<>();
+		for (SearchQuery sq : findAll()) {
+			if (sq.getConnexion().getId() == id)
+				list.add(sq);
+		}
+		return list;
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody

@@ -1,5 +1,6 @@
 package com.monsmartphone.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +29,78 @@ public class ConnexionController {
 	public List<Connexion> findAll() {
 		return repo.findAll();
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Connexion findOne(@PathVariable("id") final Long id) {
-		if (id == null) return new Connexion();
+		if (id == null)
+			return new Connexion();
 		return repo.findOne(id);
 	}
-	
-	@RequestMapping(value="/search", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/search/byIp", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Connexion> findFiltered(@RequestParam String pattern) {		
-		return repo.findByCountryLike( "%" + pattern + "%");
+	public List<Connexion> findFilteredByIp(@RequestParam String pattern) {
+		return repo.findByIpLike(pattern + "%");
 	}
-	
+
+	@RequestMapping(value = "/search/byCountry", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Connexion> findFilteredByCountry(@RequestParam String pattern) {
+		return repo.findByCountryLike(pattern + "%");
+	}
+
+	@RequestMapping(value = "/search/byDevice", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Connexion> findFilteredByDevice(@RequestParam String pattern) {
+		return repo.findByDeviceLike(pattern + "%");
+	}
+
+	@RequestMapping(value = "/search/byOs", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Connexion> findFilteredByOs(@RequestParam String pattern) {
+		return repo.findByOsLike(pattern + "%");
+	}
+
+	@RequestMapping(value = "/search/byBrowser", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Connexion> findFilteredByBrowser(@RequestParam String pattern) {
+		return repo.findByBrowserLike(pattern + "%");
+	}
+
+	@RequestMapping(value = "/search/byUser", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Connexion> findFilteredByUser(@RequestParam Long id) {
+		List<Connexion> list = new ArrayList<>();
+		for (Connexion cnx : findAll()) {
+			if (cnx.getUser().getId() == id)
+				list.add(cnx);
+		}
+		return list;
+	}
+
+	@RequestMapping(value = "/search/byDurationUp", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Connexion> findFilteredByDurationUp(@RequestParam Long id) {
+		List<Connexion> list = new ArrayList<>();
+		for (Connexion cnx : findAll()) {
+			if (cnx.getDuration() >= id)
+				list.add(cnx);
+		}
+		return list;
+	}
+
+	@RequestMapping(value = "/search/byDurationDown", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Connexion> findFilteredByDurationDown(@RequestParam Long duration) {
+		List<Connexion> list = new ArrayList<>();
+		for (Connexion cnx : findAll()) {
+			if (cnx.getDuration() <= duration)
+				list.add(cnx);
+		}
+		return list;
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
