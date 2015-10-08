@@ -11,10 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @Entity
@@ -30,6 +32,11 @@ public class Brand implements Serializable {
 
 	@Column(name = "name", unique = true, nullable = false)
 	private String name;
+	
+	@JsonIgnore
+	@Lob
+	@Column (name = "image")
+	private String image;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = false)
 	@JoinColumn(name = "idbrand", referencedColumnName = "id", nullable = true)
@@ -49,6 +56,14 @@ public class Brand implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public List<Model> getModels() {

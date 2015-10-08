@@ -2,10 +2,10 @@ var app  = angular.module("app", ["ngResource", "ngRoute", "oitozero.ngSweetAler
 
 app.config(function($routeProvider) {
 	$routeProvider
-	.when("/home"      ,{templateUrl :  "/views/home.html"      })
-	.when("/ads"       ,{templateUrl :  "/views/ad/ads.html"    })
-	.when("/ad/:id?"   ,{templateUrl :  "/views/ad/ad.html"     })
-	.when("/"          ,{redirectTo  :  "/home"                 })
+	.when("/home"      ,{templateUrl :  "/views/home.html"        })
+	.when("/ads"       ,{templateUrl :  "/views/ads/list.html"    })
+	.when("/ad/:id?"   ,{templateUrl :  "/views/ads/form.html"    })
+	.when("/"          ,{redirectTo  :  "/home"                   })
 	.otherwise({redirectTo : "/"});
 });
 

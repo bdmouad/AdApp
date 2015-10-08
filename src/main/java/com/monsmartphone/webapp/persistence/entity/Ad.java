@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -32,14 +33,17 @@ public class Ad implements Serializable {
 	@Column(name = "username", length = 100, nullable = false)
 	private String username;
 
+	@Lob
 	@Column(name = "photo1", nullable = true)
-	private byte[] photo1;
+	private String photo1;
 
+	@Lob
 	@Column(name = "photo2", nullable = true)
-	private byte[] photo2;
+	private String photo2;
 
+	@Lob
 	@Column(name = "photo3", nullable = true)
-	private byte[] photo3;
+	private String photo3;
 
 	@Column(name = "city", length = 100, nullable = false)
 	private String city;
@@ -85,27 +89,27 @@ public class Ad implements Serializable {
 		this.username = username;
 	}
 
-	public byte[] getPhoto1() {
+	public String getPhoto1() {
 		return photo1;
 	}
 
-	public void setPhoto1(byte[] photo1) {
+	public void setPhoto1(String photo1) {
 		this.photo1 = photo1;
 	}
 
-	public byte[] getPhoto2() {
+	public String getPhoto2() {
 		return photo2;
 	}
 
-	public void setPhoto2(byte[] photo2) {
+	public void setPhoto2(String photo2) {
 		this.photo2 = photo2;
 	}
 
-	public byte[] getPhoto3() {
+	public String getPhoto3() {
 		return photo3;
 	}
 
-	public void setPhoto3(byte[] photo3) {
+	public void setPhoto3(String photo3) {
 		this.photo3 = photo3;
 	}
 

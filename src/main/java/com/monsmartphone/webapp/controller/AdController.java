@@ -61,8 +61,8 @@ public class AdController {
 
 	@RequestMapping(value = "/{id}/photos", method = RequestMethod.GET)
 	@ResponseBody
-	public List<byte[]> getPhotosBytesById(@PathVariable("id") final Long id) {
-		List<byte[]> list = new ArrayList<>();
+	public List<String> getPhotosBytesById(@PathVariable("id") final Long id) {
+		List<String> list = new ArrayList<>();
 		Ad ad = repo.findOne(id);
 		list.add(ad.getPhoto1());
 		list.add(ad.getPhoto2());
@@ -72,26 +72,26 @@ public class AdController {
 
 	@RequestMapping(value = "/{id}/photo1", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<byte[]> getPhoto1ById(@PathVariable("id") final Long id) {
+	public ResponseEntity<String> getPhoto1ById(@PathVariable("id") final Long id) {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.IMAGE_PNG);
-		return new ResponseEntity<byte[]>(repo.findOne(id).getPhoto1(), headers, HttpStatus.CREATED);
+		return new ResponseEntity<String>(repo.findOne(id).getPhoto1(), headers, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}/photo2", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<byte[]> findPhoto2ById(@PathVariable("id") final Long id) {
+	public ResponseEntity<String> findPhoto2ById(@PathVariable("id") final Long id) {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.IMAGE_PNG);
-		return new ResponseEntity<byte[]>(repo.findOne(id).getPhoto2(), headers, HttpStatus.CREATED);
+		return new ResponseEntity<String>(repo.findOne(id).getPhoto2(), headers, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}/photo3", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<byte[]> findPhoto3ById(@PathVariable("id") final Long id) {
+	public ResponseEntity<String> findPhoto3ById(@PathVariable("id") final Long id) {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.IMAGE_PNG);
-		return new ResponseEntity<byte[]>(repo.findOne(id).getPhoto3(), headers, HttpStatus.CREATED);
+		return new ResponseEntity<String>(repo.findOne(id).getPhoto3(), headers, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/searchByCity", method = RequestMethod.GET)
